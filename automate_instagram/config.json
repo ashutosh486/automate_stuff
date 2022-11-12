@@ -1,0 +1,16 @@
+{
+    "reddit_auth_file" : "credentials/redditapi_cred.json",
+    "reddit_headers" : "credentials/header_reddit.json",
+    "imgbb_cred" : "credentials/param_imgbb.json",
+    "cred_loc" : "credentials/instagramapi_cred.json",
+    
+    "input_story_loc" : "posts_csv/downloadedStories.xlsx",
+    "posted_story_loc" : "posts_csv/postedStories.xlsx",
+    "file_num_loc" : "2Bposted/track_filenum.txt",
+    "output_image_path" : "2Bposted/test_img.jpg",
+    
+    "template_image_path" : "template/bg_design.jpg",
+    "regular_font_path" : "font/AnonymousPro-Regular.ttf",
+    "url" : "https://api.imgbb.com/1/upload",
+    "n_results" : 1
+}
