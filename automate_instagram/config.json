@@ -12,5 +12,6 @@
     "template_image_path" : "template/bg_design.jpg",
     "regular_font_path" : "font/AnonymousPro-Regular.ttf",
     "url" : "https://api.imgbb.com/1/upload",
-    "n_results" : 1
+    "n_results" : 1,
+    "after_loc" : "after.txt"
 }

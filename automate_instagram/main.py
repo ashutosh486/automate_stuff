@@ -7,6 +7,9 @@ from create_post import create_post
 from reddit_api import get_auth, get_stories
 from post_on_insta import upload2instagram 
 import re
+import time
+import warnings
+warnings.filterwarnings("ignore")
 
 def main(cfg):
     
@@ -28,14 +31,22 @@ def main(cfg):
 
 
     print("Number of stories to be posted:", n_results)
+
     ## Get Authorisation
     auth_status = get_auth(reddit_auth_file, reddit_headers)
     print("Authentication Granted")
 
-    ## Get top 100 stories every day
-    story_status = get_stories(header_file_loc = reddit_headers, output_filename = input_story_loc, subreddit="TwoSentenceHorror",
-                                top_n = 100, filter_type = "top", filter_by = "day")
-    print("Status of Stories:", story_status)
+    after_loc = cfg["after_loc"]
+    for filter_type in ["top", "hot"]:
+        for filter_by in ["day", "week", "year", "all"]:
+            row_added = 1
+            while (row_added>0):
+            ## Get top 100 stories every day
+                row_added = get_stories(header_file_loc = reddit_headers, output_filename = input_story_loc, subreddit="TwoSentenceHorror",
+                        top_n = 100, filter_type = filter_type, filter_by = filter_by, after_loc=after_loc)
+                time.sleep(2)
+
+        os.remove(after_loc)
 
     ## Select Random n_results stories from input_story_loc
     all_stories = pd.read_excel(input_story_loc)

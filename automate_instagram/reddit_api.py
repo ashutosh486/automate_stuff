@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import os
 import json
+from datetime import datetime
 
 ## Get authantication  ## Parts of the code has been taken from https://towardsdatascience.com/how-to-use-the-reddit-api-in-python-5e05ddfd1e5c
 def get_auth(auth_dict_loc, header_file_loc):
@@ -50,17 +51,23 @@ def get_auth(auth_dict_loc, header_file_loc):
     return "Successfully Created header"
 
 
-def get_stories(header_file_loc, subreddit, output_filename, top_n, filter_type, filter_by):
+def get_stories(header_file_loc, subreddit, output_filename, top_n, filter_type, filter_by, after_loc):
     with open(header_file_loc, 'r') as reader:
         headers = json.load(reader)
 
+    params={"limit":top_n, "t":filter_by}
+
+    if os.path.exists(after_loc):
+        with open(after_loc, "r") as reader:
+            params["after"] = reader.readline().split("\n")[0]
     res = requests.get(f"https://oauth.reddit.com/r/{subreddit}/{filter_type}",
-                headers=headers, params={"limit":top_n, "t":filter_by})
+            headers=headers, params=params)
     if os.path.exists(output_filename):
         df = pd.read_excel(output_filename)
         old_count = len(df)
     else:
         df = pd.DataFrame()
+
     for story in res.json()["data"]["children"]:
         df = df.append({
                 'subreddit': story['data']['subreddit'],
@@ -69,13 +76,16 @@ def get_stories(header_file_loc, subreddit, output_filename, top_n, filter_type,
                 'selftext': story['data']['selftext'],
                 'upvote_ratio': story['data']['upvote_ratio'],
                 'ups': story['data']['ups'],
-                'created_utc': story['data']['created_utc']
+                'created_utc': story['data']['created_utc'],
         }, ignore_index=True)
+    if len(res.json()["data"]["children"])>0:
+        fullname = story['kind'] + '_' + story['data']['id']
+        with open(after_loc, "w") as writer:
+            writer.write(fullname+"\n"+datetime.fromtimestamp(story['data']['created_utc']).strftime('%Y-%m-%dT%H:%M:%SZ'))
     df.drop_duplicates(subset=["title", "selftext"], inplace=True, keep='last')
     df = df.sort_values(by=['ups'], ascending=False)
-    df = df[df["ups"]>100]
+    df = df[df["ups"]>20]
     new_count = len(df)
-    print("New stories added:", new_count-old_count)
-    print("Total Stories Present:", new_count)
+    print("New Items Added {} for {} by {}".format(new_count-old_count, filter_type, filter_by))
     df.to_excel(output_filename, index=False)
-    return "Successfully written to file"
+    return new_count-old_count
