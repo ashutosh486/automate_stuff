@@ -6,6 +6,7 @@ from upload_imgbb import upload2imgbb
 from create_post import create_post
 from reddit_api import get_auth, get_stories
 from post_on_insta import upload2instagram 
+from data_storage import store_data
 import re
 import time
 import warnings
@@ -42,8 +43,9 @@ def main(cfg):
             row_added = 1
             while (row_added>0):
             ## Get top 100 stories every day
-                row_added = get_stories(header_file_loc = reddit_headers, output_filename = input_story_loc, subreddit="TwoSentenceHorror",
+                rec_story = get_stories(header_file_loc = reddit_headers, output_filename = input_story_loc, subreddit="TwoSentenceHorror",
                         top_n = 100, filter_type = filter_type, filter_by = filter_by, after_loc=after_loc)
+                row_added = store_data(rec_story, input_story_loc, after_loc, filter_type, filter_by)
                 time.sleep(2)
 
         os.remove(after_loc)
