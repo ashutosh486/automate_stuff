@@ -15,4 +15,4 @@ So as an experimentation I have automated a page on Instagram: [2senthorror](htt
 
 ## Want to support the Project?
 
-<a href="https://www.buymeacoffee.com/ashutoshp" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=ashutoshp&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=fffff" alt="Buy Me A Coffee" height="41" width="174"></a>
+<a href="https://www.buymeacoffee.com/ashutoshp" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=ashutoshp&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=fffff" alt="Buy Me A Coffee" height="80" width="250"></a>
